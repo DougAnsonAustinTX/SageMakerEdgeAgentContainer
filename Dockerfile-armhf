@@ -1,0 +1,14 @@
+FROM ubuntu:18.04
+RUN DEBIAN_FRONTEND=noninteractive && TZ=America/Chicago && apt-get update -y && apt-get -y dist-upgrade && apt-get install -y socat vim curl build-essential
+RUN DEBIAN_FRONTEND=noninteractive && TZ=America/Chicago && curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && apt-get update && apt-get install -y nodejs
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+RUN rm -rf Dockerfile* .git README.md *.yaml 
+RUN rm -rf edge-agent-*
+RUN chmod 755 ./*.sh
+RUN ./install-dirs.sh
+RUN ./install-pt.sh
+RUN rm install-pt.sh install-dirs.sh build-image.sh
+RUN rm install-sagemaker-service.sh *service *template *gz *pptx remove-sagemaker-service.sh tail-sagemaker.sh launch_local.sh
+RUN cd ./sagemaker-agent-pt ; rm create_stubs.sh install-local.sh launch-local.sh 
+RUN mkdir ./logs

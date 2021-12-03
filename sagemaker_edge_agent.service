@@ -1,0 +1,19 @@
+[Unit]
+Description=sagemaker edge agent
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=root
+EnvironmentFile=/etc/sagemaker_agent.env
+ExecStart=/usr/bin/sagemaker_edge_agent_binary -f -a ${SOCKET_ADDRESS} -c ${AGENT_CONFIG_FILE_PATH} -m ${MAX_PAYLOAD_ARGS}
+WorkingDirectory=/tmp
+Restart=always
+RestartSec=15
+KillMode=mixed
+KillSignal=SIGHUP
+TimeoutStopSec=120
+
+[Install]
+WantedBy=multi-user.target

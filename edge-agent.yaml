@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sagemaker-edge-agent-pod
+spec:
+  automountServiceAccountToken: false
+  restartPolicy: OnFailure
+  hostname: pelion-edge-xavier
+  nodeName: MVS_PELION_GW_DEVICE_ID
+  hostNetwork: true
+  containers:
+  - name: sagemaker-edge-agent-pod
+    image: "danson/edgeagentimage-SAPT_UNAME_M_GOES_HERE:latest"
+    env:
+    - name: SAPT_AWS_REGION
+      value: "YOUR_AWS_REGION_GOES_HERE"
+    - name: SAPT_AWS_ACCESS_KEY_ID
+      value: "YOUR_AWS_ACCESS_KEY_GOES_HERE"
+    - name: SAPT_AWS_SECRET_ACCESS_KEY
+      value: "YOUR_AWS_SECRET_ACCESS_KEY_GOES_HERE"
+    - name: SAPT_AWS_S3_BUCKET
+      value: "YOUR_AWS_SAGEMAKER_S3_BUCKET_GOES_HERE"
+    - name: SAPT_AWS_S3_MODELS_DIR
+      value: "YOUR_S3_DIR_WHERE_SAGEMAKER_SAVES_COMPILED_MODELS"
+    - name: SAPT_AWS_S3_DATA_DIR
+      value: "YOUR_S3_DIR_WHERE_SAGEMAKER_STORES_INPUT_AND_OUTPUT_DATA"
+    - name: DEPLOYMENT_NAME
+      value: "sagemaker-edge-agent-pod"
+    - name: SAPT_MAP_PORT
+      value: "8235"
+    - name: SAPT_LOG_LEVEL
+      value: "INFO,ERROR"
+    - name: SAPT_PT_DEVICE_NAME
+      value: "sagemaker-edge-agent"
+    command: ["/usr/src/app/run-service.sh"]
+    securityContext:
+      capabilities:
+        add: ["NET_ADMIN", "SYS_ADMIN"]
+      privileged: true
+    volumeMounts:
+      - mountPath: /edge-agent
+        name: sagedata
+      - mountPath: /tmp/edge.sock
+        name: edge
+      - mountPath: /tmp/sagemaker_edge_agent_example.sock
+        name: edgesock
+      - mountPath: /models
+        name: models
+  volumes:
+    - name: sagedata
+      hostPath:
+        path: /edge-agent
+        type: DirectoryOrCreate
+    - name: edge
+      hostPath:
+        path: /tmp/edge.sock
+    - name: models
+      hostPath:
+        path: /models
+    - name: edgesock
+      hostPath:
+        path: /tmp/sagemaker_edge_agent_example.sock
+      

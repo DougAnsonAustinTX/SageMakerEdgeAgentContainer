@@ -1,0 +1,15 @@
+{
+    "sagemaker_edge_core_device_uuid": "CREATE_A_DEVICE_UUID",
+    "sagemaker_edge_core_device_fleet_name": "SET_YOUR_FLEET_NAME",
+    "sagemaker_edge_core_region": "AWS_REGION_GOES_HERE",
+    "sagemaker_edge_core_root_certs_path": "/models/aws/certs",
+    "sagemaker_edge_provider_provider": "None",
+    "sagemaker_edge_core_capture_data_destination": "Cloud",
+    "sagemaker_edge_provider_s3_bucket_name": "AWS_SAGEMAKER_S3_BUCKET_NAME_GOES_HERE",
+    "sagemaker_edge_core_folder_prefix": "upload",
+    "sagemaker_edge_core_capture_data_buffer_size": 2048,
+    "sagemaker_edge_core_capture_data_batch_size": 2048,
+    "sagemaker_edge_core_capture_data_push_period_seconds": 120,
+    "sagemaker_edge_core_capture_data_base64_embed_limit": 2048,
+    "sagemaker_edge_log_verbose": true
+}
